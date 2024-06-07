@@ -1,24 +1,37 @@
 "use client";
 
+import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { MessageSquare } from "lucide-react";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { formSchema } from "./constants";
-
 import { Heading } from "@/components/heading";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Empty } from "@/components/empty";
+import { Loader } from "@/components/loader";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
 } from "@/components/ui/form";
+import { cn } from "@/lib/utils";
+import { UserAvatar } from "@/components/user-avatar";
+import { BotAvatar } from "@/components/bot-avatar";
+
+interface Message {
+  role: "user" | "assistant";
+  content: string;
+}
 
 const ConversationPage = () => {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -29,7 +42,27 @@ const ConversationPage = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log({ values });
+    try {
+      const response = await axios.post('/api/conversation', {
+        messages: [{ role: "user", content: values.prompt }]
+      });
+
+      const assistantMessage = response.data?.message?.content;
+
+      if (assistantMessage) {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { role: "user", content: values.prompt },
+          { role: "assistant", content: assistantMessage },
+        ]);
+      }
+
+      form.reset();
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      router.refresh();
+    }
   };
 
   const predefinedPlaceholder = [
@@ -46,7 +79,6 @@ const ConversationPage = () => {
   ];
 
   const randomPlaceholder = predefinedPlaceholder[Math.floor(Math.random() * predefinedPlaceholder.length)];
-
 
   return (
     <div>
@@ -89,11 +121,33 @@ const ConversationPage = () => {
           </Form>
         </div>
         <div className="space-y-4 mt-4">
-          Messages Content
+          {isLoading && (
+            <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
+              <Loader />
+            </div>
+          )}
+          {messages.length === 0 && !isLoading && (
+            <Empty 
+              label="No conversation started"
+            />
+          )}
+          <div className="flex flex-col-reverse gap-y-4">
+            {messages.map((message, index) => (
+              <div key={index}
+                className={cn(
+                  "p-8 w-full flex items-start  gap-x-8 rounded-lg",
+                  message.role === "user" ? "bg-white border border-black/10" : "bg-muted"
+                )}
+              >
+                {message.role === "user" ?  <UserAvatar /> : <BotAvatar />}
+                {message.content}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
   );
 }
- 
+
 export default ConversationPage;
