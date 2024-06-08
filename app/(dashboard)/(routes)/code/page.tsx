@@ -71,16 +71,16 @@ const CodePage = () => {
   };
 
   const predefinedPlaceholder = [
-    "How do I calculate the radius of a circle?",
-    "What is the current tallest building in the world?",
-    "When was the invention of the first computer?",
-    "Can you explain the theory of relativity?",
-    "What are the benefits of meditation?",
-    "How does machine learning work?",
-    "What are the latest trends in artificial intelligence?",
-    "How can I improve my coding skills?",
-    "What are some healthy diet tips?",
-    "How do I start learning a new language?"
+    "Can you generate a React component that fetches data from an API and displays it?",
+    "How do I write a Python script to read a CSV file and output summary statistics?",
+    "Can you provide a Java function that sorts an array of integers using merge sort?",
+    "Can you create a SQL query to find the top 5 highest salaries in a company database?",
+    "Can you generate a CSS animation for a button hover effect with a bounce?",
+    "How do I create a Node.js script to set up an Express server?",
+    "Can you generate a TypeScript function to filter an array of objects?",
+    "How do I implement user authentication in a Next.js app using Clerk?",
+    "Can you provide a code snippet for sending an email using EmailJS in React?",
+    "How do I write a function in JavaScript to calculate the percentage change between two numbers?"
   ];
 
   const randomPlaceholder = predefinedPlaceholder[Math.floor(Math.random() * predefinedPlaceholder.length)];
