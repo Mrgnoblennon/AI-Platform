@@ -1,6 +1,13 @@
 "use client";
 
-import { ArrowRight, CodeIcon, ImageIcon, MessageSquare, Music, VideoIcon } from "lucide-react";
+import {
+  ArrowRight, 
+  Code, 
+  ImageIcon, 
+  MessageSquare, 
+  Music, 
+  VideoIcon 
+} from "lucide-react";
 
 import { 
   Card,
@@ -39,7 +46,7 @@ const tools = [
   },
   {
     label: "Code Generation",
-    icon: CodeIcon,
+    icon: Code,
     color: "text-green-700",
     bgColor: "bg-green-700/10",
     href: "/code"

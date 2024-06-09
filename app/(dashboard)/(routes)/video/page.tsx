@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useProModal } from "@/hooks/use-pro-modal";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import * as z from "zod";
@@ -23,8 +24,9 @@ import {
 } from "@/components/ui/form";
 
 const VideoPage = () => {
-  const [video, setVideo] = useState<string>();
+  const proModal = useProModal();
   const router = useRouter();
+  const [video, setVideo] = useState<string>();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -45,7 +47,9 @@ const VideoPage = () => {
 
       form.reset();
     } catch (error: any) {
-      console.log(error);
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
     } finally {
       router.refresh();
     }

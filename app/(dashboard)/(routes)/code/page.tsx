@@ -1,5 +1,6 @@
 "use client";
 
+import { useProModal } from "@/hooks/use-pro-modal";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactMarkdown from "react-markdown";
@@ -34,8 +35,9 @@ interface Message {
 }
 
 const CodePage = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const proModal = useProModal();
   const router = useRouter();
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,7 +66,9 @@ const CodePage = () => {
 
       form.reset();
     } catch (error: any) {
-      console.log(error);
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
     } finally {
       router.refresh();
     }

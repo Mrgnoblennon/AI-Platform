@@ -1,5 +1,6 @@
 "use client";
 
+import { useProModal } from "@/hooks/use-pro-modal";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -29,8 +30,9 @@ interface Message {
 }
 
 const ConversationPage = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const proModal = useProModal();
   const router = useRouter();
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -59,7 +61,9 @@ const ConversationPage = () => {
 
       form.reset();
     } catch (error: any) {
-      console.log(error);
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
     } finally {
       router.refresh();
     }

@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import * as z from "zod";
+import { useProModal } from "@/hooks/use-pro-modal";
 import { useForm } from "react-hook-form";
 import { DownloadIcon, ImageIcon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,12 +37,8 @@ from "@/components/ui/select";
 import { Card, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 
-interface Message {
-  role: "user" | "assistant";
-  content: string;
-}
-
 const ImagePage = () => {
+  const proModal = useProModal();
   const router = useRouter();
   const [images, setImages] = useState<string[]>([]);
 
@@ -67,7 +64,9 @@ const ImagePage = () => {
       setImages(urls);
       form.reset();
     } catch (error: any) {
-      console.log(error);
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
     } finally {
       router.refresh();
     }
