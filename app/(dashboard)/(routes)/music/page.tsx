@@ -22,11 +22,6 @@ import {
   FormItem,
 } from "@/components/ui/form";
 
-interface Message {
-  role: "user" | "assistant";
-  content: string;
-}
-
 const MusicPage = () => {
   const [music, setMusic] = useState<string>();
   const router = useRouter();
@@ -48,7 +43,6 @@ const MusicPage = () => {
       
       setMusic(response.data?.audio);
 
-      console.log("Response", response.data?.audio);
       form.reset();
     } catch (error: any) {
       console.log(error);
