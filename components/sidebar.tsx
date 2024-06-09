@@ -6,6 +6,11 @@ import { cn } from "@/lib/utils";
 import { MageRobotHappy } from "@/public/robot";
 import { CodeIcon, ImageIcon, LayoutDashboard, MessageSquare, MusicIcon, SettingsIcon, VideoIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { FreeCounter } from "@/components/free-counter";
+
+interface SidebarProps {
+  apiLimitCount: number
+}
 
 const routes = [
   {
@@ -51,7 +56,9 @@ const routes = [
   },
 ]
 
-const Sidebar = () => {
+const Sidebar = ({
+  apiLimitCount = 0
+}: SidebarProps ) => {
   const pathname = usePathname();
 
   return ( 
@@ -83,6 +90,9 @@ const Sidebar = () => {
           ))}
         </div>
       </div>
+      <FreeCounter 
+        apiLimitCount={apiLimitCount}
+      />
     </div>
    );
 }
