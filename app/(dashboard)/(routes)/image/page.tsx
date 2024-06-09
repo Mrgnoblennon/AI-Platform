@@ -74,24 +74,25 @@ const ImagePage = () => {
   };
 
   const predefinedPlaceholder = [
-    "How do I calculate the radius of a circle?",
-    "What is the current tallest building in the world?",
-    "When was the invention of the first computer?",
-    "Can you explain the theory of relativity?",
-    "What are the benefits of meditation?",
-    "How does machine learning work?",
-    "What are the latest trends in artificial intelligence?",
-    "How can I improve my coding skills?",
-    "What are some healthy diet tips?",
-    "How do I start learning a new language?"
+    "Can you generate an image of a futuristic city skyline at sunset with flying cars?",
+    "Generate a serene beach scene with crystal clear water and palm trees.",
+    "Create a fantasy landscape with a castle on a hill under a starry night sky.",
+    "Show an underwater world with colorful coral reefs and diverse marine life.",
+    "Generate an image of a bustling marketplace in a medieval village.",
+    "Create a steampunk-themed cityscape with airships and vintage machinery.",
+    "Show a lush forest with a hidden waterfall and exotic plants.",
+    "Generate an image of an astronaut floating in space with the Earth in the background.",
+    "Create a sci-fi scene of a robot exploring a distant planet.",
+    "Show a cozy cabin in the mountains during a snowy winter evening."
   ];
+
 
   const randomPlaceholder = predefinedPlaceholder[Math.floor(Math.random() * predefinedPlaceholder.length)];
 
   return (
     <div>
       <Heading 
-        title="Image"
+        title="Image Generation"
         description="Turn your prompt into an image."
         icon={ImageIcon}
         iconColor="text-pink-700"
