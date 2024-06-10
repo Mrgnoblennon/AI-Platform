@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
 import { increaseApiLimit, checkApiLimit } from "@/lib/api-limit";
+import { checkSubscription } from '@/lib/subscriptions';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -37,8 +38,9 @@ export async function POST(
     }
 
     const freetrial = await checkApiLimit();
+    const isPro = await checkSubscription(); 
 
-    if (!freetrial) {
+    if (!freetrial && !isPro) {
       return new NextResponse("Free trial has expired", { status: 403 });
     }
 
@@ -48,8 +50,10 @@ export async function POST(
       size: resolution,
     });
 
-    await increaseApiLimit();
-
+    if (!isPro) {
+      await increaseApiLimit();
+    }
+    
     return NextResponse.json(completion.data);
   } catch (error) {
     console.log("[IMAGE]", error);
