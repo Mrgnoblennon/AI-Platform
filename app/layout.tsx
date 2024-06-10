@@ -25,7 +25,7 @@ export default function RootLayout({
       <html lang="en">
         <head>
           {/* Add Lordicon script */}
-          <script src="https://cdn.lordicon.com/lordicon.js"></script>
+          <Script src="https://cdn.lordicon.com/lordicon.js" strategy="lazyOnload"></Script>
         </head>
         <CrispProvider />
         <body className={inter.className}>
